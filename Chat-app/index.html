@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat GO App</title>
+</head>
+<body>
+    <h1>Chat GO App</h1>
+    <div id="chat"></div>
+    <input type="text" id="message" placeholder="Type a message...">
+    <button id="send">Send</button>
+
+    <script>
+        const socket = new WebSocket("ws://localhost:8080/ws");
+        const chat = document.getElementById("chat");
+        const messageInput = document.getElementById("message");
+        const sendButton = document.getElementById("send");
+
+        socket.onmessage = (event) => {
+            const msg = event.data;
+            chat.innerHTML += `<p>${msg}</p>`;
+        };
+
+        sendButton.onclick = () => {
+            const message = messageInput.value;
+            socket.send(message);
+            messageInput.value = "";
+        };
+    </script>
+</body>
+</html>
